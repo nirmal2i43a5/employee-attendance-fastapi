@@ -30,7 +30,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/home/nirmal/Documents/Fast_api_projects/attendance_management/env"
+set -gx VIRTUAL_ENV "/home/nirmal/Documents/Fast_api_projects/my_apps/employee-attendance/src/env"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH

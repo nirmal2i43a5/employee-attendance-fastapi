@@ -5,7 +5,7 @@ from fastapi.responses import JSONResponse
 from app.db import SessionLocal
 from sqlalchemy.orm import Session
 from app.models.todo import Item
-from app.schemas.todo import (
+from app.schemas.user import (
     ItemRead,ItemCreate,ItemUpdate
 )
 from app.db import get_db
