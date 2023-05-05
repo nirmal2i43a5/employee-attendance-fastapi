@@ -10,6 +10,8 @@ class Employee(Base):
     id = Column(Integer, primary_key=True, index=True)
     address = Column(String)
     contact = Column(String)
+    # image
+    # thumbnail
     attendance = relationship("Attendance", backref="employee")
     user_id = Column(Integer, ForeignKey('users.id'))
     department_id = Column(Integer, ForeignKey('departments.id'))

@@ -1,5 +1,6 @@
 
-from pydantic import BaseModel, Optional, EmailStr
+from pydantic import BaseModel, EmailStr
+from typing import Optional
 from datetime import datetime
 
 # Shared properties
@@ -20,20 +21,19 @@ class UserUpdate(UserBase):
 
 
 # fetching all users
-class UserInDBBase(UserBase):
+class UserRead(UserBase):
     id: Optional[int] = None
 
     class Config:
         orm_mode = True
 
 
-
 # Additional properties to return via API
-class User(UserInDBBase):
+class User(UserRead):
     pass
 
 
 # Additional properties stored in DB
-class UserInDB(UserInDBBase):
+class UserInDB(UserRead):
     hashed_password: str
 
