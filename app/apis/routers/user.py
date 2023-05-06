@@ -1,10 +1,12 @@
 from app import  models, schemas
-from typing import List
+from typing import List, Any
 from fastapi import APIRouter,HTTPException,Depends
 from fastapi.responses import JSONResponse
 from app.database import SessionLocal
 from sqlalchemy.orm import Session
 from app.models import User
+from app.crud import user
+from app.apis import deps
 from app.schemas.user import (
     UserRead,UserCreate,UserUpdate
 )
@@ -13,6 +15,18 @@ from app.core.security import get_password_hash
 
 router = APIRouter()
 
+@router.get("/", response_model=List[UserRead])
+def read_users(
+    db: Session = Depends(get_db),
+    skip: int = 0,
+    limit: int = 100,
+    current_user: models.User = Depends(deps.get_current_active_superuser),
+) -> Any:
+    """
+    Retrieve users.
+    """
+    users = user.get_multi(db, skip=skip, limit=limit)
+    return users
 
 @router.post("/create/", response_model = UserCreate)
 def create_user(user: UserCreate,  
