@@ -1,4 +1,4 @@
-alembic==1.10.4
+alembic
 anyio==3.6.2
 asgiref==3.6.0
 click==8.1.3
