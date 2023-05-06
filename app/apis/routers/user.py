@@ -16,7 +16,8 @@ router = APIRouter()
 
 @router.post("/create/", response_model = UserCreate)
 def create_user(user: UserCreate,  
-                db: Session = Depends(get_db)
+                db: Session = Depends(get_db),
+                current_user: models.User = Depends(deps.get_current_active_superuser),
                 ):
     existing_user = db.query(User).filter(User.email == user.email).first()
 
@@ -31,11 +32,12 @@ def create_user(user: UserCreate,
             hashed_password = get_password_hash(user.password),
             is_superuser = user.is_superuser,
         )
-    print(db_obj)
     db.add(db_obj)
     db.commit()
     db.refresh(db_obj)
     return JSONResponse(content={"message": "User created successfully"})
-   
+
+
+
 
 
