@@ -10,20 +10,30 @@ from app import crud, models, schemas
 from app.core import security
 from app.core.config import settings
 from app.database import SessionLocal, get_db
+from app.schemas.token import TokenPayload
 
-reusable_oauth2 = OAuth2PasswordBearer(
-    tokenUrl=f"{settings.API_V1_STR}/login/access-token"
+oauth2_scheme = OAuth2PasswordBearer(
+    tokenUrl="/login/access-token"
 )
 
 
 def get_current_user(
-    db: Session = Depends(get_db), token: str = Depends(reusable_oauth2)
+    db: Session = Depends(get_db), 
+    token: str = Depends(oauth2_scheme)
 ) -> models.User:
     try:
         payload = jwt.decode(
-            token, settings.SECRET_KEY, algorithms=[security.ALGORITHM]
+            token, 
+            settings.SECRET_KEY, 
+            algorithms=[security.ALGORITHM],
+                options={
+            "verify_signature": False,
+            # "verify_aud": False,
+            # "verify_iss": False
+            }
         )
-        token_data = schemas.TokenPayload(**payload)
+        token_data = TokenPayload(**payload)
+
     except (jwt.JWTError, ValidationError):
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,

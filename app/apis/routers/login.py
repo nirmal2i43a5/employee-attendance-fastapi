@@ -15,13 +15,14 @@ from app.database import get_db
 router = APIRouter()
 
 
-@router.post("/login/access-token", response_model=Token)
+@router.post("/access-token", response_model=Token)
 def login_access_token(
-    db: Session = Depends(get_db), form_data: OAuth2PasswordRequestForm = Depends()
+    form_data: OAuth2PasswordRequestForm = Depends(),
+    db: Session = Depends(get_db),
 ) -> Any:
     
     """
-    OAuth2 compatible token login, get an access token for future requests
+    OAuth2 compatible token login
     """
     user = crud.user.authenticate(
         db, email=form_data.username, password=form_data.password
